@@ -95,6 +95,12 @@
   white-space: pre-line;
 }
 
+  .date {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
 
   </style>
 </head>
@@ -202,13 +208,19 @@
 
 
       div.innerHTML = `
-        <div class="date">📅 ${key}</div>
-        <div class="content">${value.replace(" / ", "\n")}</div>
+      <div class="date" onclick="toggle(this)">📅 ${key}</div>
+      <div class="content">${value.replace(" / ", "\n")}</div>
       `;
+
 
       container.appendChild(div);
     });
   }
+function toggle(el) {
+  const content = el.nextElementSibling;
+  content.style.display =
+    content.style.display === "none" ? "block" : "none";
+}
 
   renderHistory();
 </script>
