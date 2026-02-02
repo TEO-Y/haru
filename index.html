@@ -145,7 +145,7 @@
 
     function save() {
       const text = document.getElementById("answer").value.trim();
-      cconst file = document.getElementById("photo").files[0];
+      const file = document.getElementById("photo").files[0];
 
 
       if (!text) return alert("한 줄이라도 적어줘 🙂");
@@ -188,7 +188,8 @@ else {
       const image = parts[1] || "";
 
 
-      content += `${key}\n${value}\n\n`;
+      content += `${key}\n${text}\n\n`;
+
     }
 
     const blob = new Blob([content], { type: "text/plain" });
@@ -215,30 +216,31 @@ else {
     const recentKeys = keys.slice(0, 7);
 
 
-    recentkeys.forEach(key => {
-      const value = localStorage.getItem(key);
+recentKeys.forEach(key => {
+  const raw = localStorage.getItem(key);
+  const parts = raw.split(" || ");
+  const text = parts[0];
+  const image = parts[1] || "";
 
-      const div = document.createElement("div");
+  const div = document.createElement("div");
 
-      if (key === new Date().toLocaleDateString()) {
-        div.className = "entry today";
-      } else {
-        div.className = "entry";
-      }
+  if (key === new Date().toLocaleDateString()) {
+    div.className = "entry today";
+  } else {
+    div.className = "entry";
+  }
 
+  div.innerHTML = `
+    <div class="date" onclick="toggle(this)">📅 ${key}</div>
+    <div class="content">
+      ${text ? text.replace(" / ", "\n") : ""}
+      ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
+    </div>
+  `;
 
-      div.innerHTML = `
-      <div class="date" onclick="toggle(this)">📅 ${key}</div>
-      <div class="content">
-  ${text ? text.replace(" / ", "\n") : ""}
-  ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
-</div>
+  container.appendChild(div);
+});
 
-      `;
-
-
-      container.appendChild(div);
-    });
   }
 function toggle(el) {
   const content = el.nextElementSibling;
