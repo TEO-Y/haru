@@ -103,13 +103,14 @@
 
 
     <div class="saved" id="saved"></div>
-
+  <div class="history">
+    <h2>📚 기록</h2>
+    <div id="history"></div>
+  </div>
+ 
   </div>
 
-  <div class="history">
-  <h2>📚 기록</h2>
-  <div id="history"></div>
-</div>
+
 
 
   <script>
@@ -137,7 +138,7 @@
         "✅ 저장됨 (" + today + ")";
       document.getElementById("answer").value = "";
     }
-    renderHistory();
+  
 
   </script>
 <script>
