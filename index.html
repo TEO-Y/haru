@@ -204,51 +204,42 @@ else {
   }
 </script>
 <script>
-  function renderHistory() {
-    const container = document.getElementById("history");
-    container.innerHTML = "";
+function renderHistory() {
+  const container = document.getElementById("history");
+  container.innerHTML = "";
 
-    // localStorage의 key들을 배열로 가져오기
-    const keys = Object.keys(localStorage);
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const raw = localStorage.getItem(key);
 
-    // 날짜 기준으로 최신순 정렬
-    keys.sort((a, b) => new Date(b) - new Date(a));
-    const recentKeys = keys.slice(0, 7);
+    if (!raw) continue;
 
+    const parts = raw.split(" || ");
+    const text = parts[0];
+    const image = parts[1] || "";
 
-recentKeys.forEach(key => {
-  const raw = localStorage.getItem(key);
-  const parts = raw.split(" || ");
-  const text = parts[0];
-  const image = parts[1] || "";
-
-  const div = document.createElement("div");
-
-  if (key === new Date().toLocaleDateString()) {
-    div.className = "entry today";
-  } else {
+    const div = document.createElement("div");
     div.className = "entry";
+
+    div.innerHTML = `
+      <div class="date" onclick="toggle(this)">📅 ${key}</div>
+      <div class="content">
+        ${text.replace(" / ", "<br>")}
+        ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
+      </div>
+    `;
+
+    container.prepend(div);
   }
+}
 
-  div.innerHTML = `
-    <div class="date" onclick="toggle(this)">📅 ${key}</div>
-    <div class="content">
-      ${text ? text.replace(" / ", "\n") : ""}
-      ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
-    </div>
-  `;
-
-  container.appendChild(div);
-});
-
-  }
 function toggle(el) {
   const content = el.nextElementSibling;
   content.style.display =
     content.style.display === "none" ? "block" : "none";
 }
 
-  renderHistory();
+renderHistory();
 </script>
 
 
