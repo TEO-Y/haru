@@ -182,7 +182,11 @@ else {
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      const [text, image] = localStorage.getItem(key).split(" || ");
+      const raw = localStorage.getItem(key);
+      const parts = raw.split(" || ");
+      const text = parts[0];
+      const image = parts[1] || "";
+
 
       content += `${key}\n${value}\n\n`;
     }
@@ -226,7 +230,7 @@ else {
       div.innerHTML = `
       <div class="date" onclick="toggle(this)">📅 ${key}</div>
       <div class="content">
-  ${text.replace(" / ", "\n")}
+  ${text ? text.replace(" / ", "\n") : ""}
   ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
 </div>
 
