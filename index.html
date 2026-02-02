@@ -61,7 +61,7 @@
 
   <div class="box">
     <h1>📝 오늘의 기록</h1>
-
+    <div id="today"></div>
     <div class="question" id="question"></div>
 
     <textarea id="answer" placeholder="오늘을 한 줄로 남겨보자. 짧아도 괜찮아."></textarea>
@@ -97,13 +97,10 @@
       document.getElementById("answer").value = "";
     }
   </script>
-
-  <div id="today"></div>
-
 <script>
   const d = new Date();
   document.getElementById("today").innerText =
-    d.getFullYear() + "년 " + (d.getMonth()+1) + "월 " + d.getDate() + "일";
+    d.getFullYear() + "년 " + (d.getMonth() + 1) + "월 " + d.getDate() + "일";
 </script>
 
 
