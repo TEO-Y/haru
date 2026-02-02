@@ -110,7 +110,8 @@
     <h1>📝 오늘의 기록</h1>
     <div id="today"></div>
     <div class="question" id="question"></div>
-
+   
+    <input type="file" id="photo" accept="image/*">
     <textarea id="answer" placeholder="오늘을 한 줄로 남겨보자. 짧아도 괜찮아."></textarea>
 
     <button onclick="save()">저장하기</button>
@@ -144,10 +145,24 @@
 
     function save() {
       const text = document.getElementById("answer").value.trim();
+      cconst file = document.getElementById("photo").files[0];
+
+
       if (!text) return alert("한 줄이라도 적어줘 🙂");
 
       const today = new Date().toLocaleDateString();
-      localStorage.setItem(today, q + " / " + text);
+      const reader = new FileReader();
+      reader.onload = function () {
+      const image = reader.result || "";
+      localStorage.setItem(today, q + " / " + text + " || " + image);
+      renderHistory();
+};
+if (file) reader.readAsDataURL(file);
+else {
+  localStorage.setItem(today, q + " / " + text + " || ");
+  renderHistory();
+}
+
 
       document.getElementById("saved").innerText =
         "✅ 저장됨 (" + today + ")";
@@ -167,7 +182,8 @@
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      const value = localStorage.getItem(key);
+      const [text, image] = localStorage.getItem(key).split(" || ");
+
       content += `${key}\n${value}\n\n`;
     }
 
@@ -209,7 +225,11 @@
 
       div.innerHTML = `
       <div class="date" onclick="toggle(this)">📅 ${key}</div>
-      <div class="content">${value.replace(" / ", "\n")}</div>
+      <div class="content">
+  ${text.replace(" / ", "\n")}
+  ${image ? `<img src="${image}" style="max-width:100%;margin-top:8px;">` : ""}
+</div>
+
       `;
 
 
