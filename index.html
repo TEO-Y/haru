@@ -74,6 +74,12 @@
   border-top: 1px solid #eee;
 }
 
+  .entry.today {
+  background: #f8f9ff;
+  border-radius: 8px;
+  padding: 12px;
+}
+
 .entry .date {
   font-size: 13px;
   color: #888;
@@ -182,7 +188,13 @@
       const value = localStorage.getItem(key);
 
       const div = document.createElement("div");
-      div.className = "entry";
+
+      if (key === new Date().toLocaleDateString()) {
+        div.className = "entry today";
+      } else {
+        div.className = "entry";
+      }
+
 
       div.innerHTML = `
         <div class="date">📅 ${key}</div>
